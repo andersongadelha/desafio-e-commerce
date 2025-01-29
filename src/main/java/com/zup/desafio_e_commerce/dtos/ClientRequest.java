@@ -1,12 +1,15 @@
 package com.zup.desafio_e_commerce.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ClientRequest {
-    private String nome;
+    @JsonProperty("nome")
+    private String name;
     private String cpf;
     private String email;
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
     public String getCpf() {

@@ -8,12 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="clientes")
+@Table(name="clients")
 public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "nome", nullable = false)
+    @Column(nullable = false)
     private String name;
     @Column(unique = true, nullable = false)
     private String cpf;

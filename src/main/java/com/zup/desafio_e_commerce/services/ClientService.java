@@ -16,10 +16,10 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public ClientResponse save(ClientRequest requisicao) {
-        ClientEntity newClient = new ClientEntity(requisicao.getNome(), requisicao.getCpf(), requisicao.getEmail());
-        validateCpf(requisicao.getCpf());
-        validateEmail(requisicao.getEmail());
+    public ClientResponse save(ClientRequest request) {
+        ClientEntity newClient = new ClientEntity(request.getName(), request.getCpf(), request.getEmail());
+        validateCpf(request.getCpf());
+        validateEmail(request.getEmail());
         ClientEntity savedClient = clientRepository.save(newClient);
 
         return new ClientResponse(savedClient.getId(), savedClient.getName(), savedClient.getCpf(), savedClient.getEmail());

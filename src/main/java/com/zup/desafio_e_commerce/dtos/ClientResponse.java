@@ -1,14 +1,17 @@
 package com.zup.desafio_e_commerce.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ClientResponse {
     private Long id;
-    private String nome;
+    @JsonProperty("nome")
+    private String name;
     private String cpf;
     private String email;
 
-    public ClientResponse(Long id, String nome, String cpf, String email) {
+    public ClientResponse(Long id, String name, String cpf, String email) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
         this.cpf = cpf;
         this.email = email;
     }
@@ -21,12 +24,12 @@ public class ClientResponse {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCpf() {

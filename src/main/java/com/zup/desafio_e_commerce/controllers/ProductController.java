@@ -22,7 +22,7 @@ public class ProductController {
 
     @PostMapping
     ResponseEntity<ProductResponse> saveProduct(@RequestBody ProductRequest productRequest) {
-        URI uri = URI.create("/produtos/produto");
+        URI uri = URI.create("/produtos");
 
         return ResponseEntity.created(uri).body(productService.save(productRequest));
     }
