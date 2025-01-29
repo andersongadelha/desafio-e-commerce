@@ -20,14 +20,14 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @PostMapping("/cliente")
+    @PostMapping
     ResponseEntity<ClientResponse> saveClient(@RequestBody ClientRequest clientRequest) {
-        URI uri = URI.create("/clientes/cliente");
+        URI uri = URI.create("/clientes");
 
         return ResponseEntity.created(uri).body(clientService.save(clientRequest));
     }
 
-    @GetMapping("/cliente/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<ClientResponse> getClientById(@PathVariable Long id) {
         return ResponseEntity.ok(clientService.findById(id));
     }
