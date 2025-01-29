@@ -13,7 +13,7 @@ public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "nome")
+    @Column(name = "nome", nullable = false)
     private String name;
     @Column(unique = true, nullable = false)
     private String cpf;
