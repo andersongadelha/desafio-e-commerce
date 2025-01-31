@@ -25,11 +25,12 @@ public class ClientService {
         return new ClientResponse(savedClient.getId(), savedClient.getName(), savedClient.getCpf(), savedClient.getEmail());
     }
 
-    public ClientResponse findById(Long id) {
-        ClientEntity clientById = clientRepository.findById(id)
-                .orElseThrow(() -> new ClientNotFoundException("Não foi encontrado cliente com id: " + id));
+    public ClientResponse findByCpf(String cpf) {
+        validateCpf(cpf);
+        ClientEntity clientByCpf = clientRepository.findByCpf(cpf)
+                .orElseThrow(() -> new ClientNotFoundException("Não foi encontrado cliente com cpf: " + cpf));
 
-        return new ClientResponse(clientById.getId(), clientById.getName(), clientById.getCpf(), clientById.getEmail());
+        return new ClientResponse(clientByCpf.getId(), clientByCpf.getName(), clientByCpf.getCpf(), clientByCpf.getEmail());
     }
 
     private void validateCpf(String cpf) {

@@ -27,9 +27,9 @@ public class ClientController {
         return ResponseEntity.created(uri).body(clientService.save(clientRequest));
     }
 
-    @GetMapping("/{id}")//TODO: usar cpf
-    public ResponseEntity<ClientResponse> getClientById(@PathVariable Long id) {
-        return ResponseEntity.ok(clientService.findById(id));
+    @GetMapping("/{cpf}")
+    public ResponseEntity<ClientResponse> getClientByCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok(clientService.findByCpf(cpf));
     }
 
     //TODO: fazer put
