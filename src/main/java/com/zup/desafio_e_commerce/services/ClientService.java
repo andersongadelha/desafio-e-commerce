@@ -11,6 +11,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class ClientService {
     @Autowired
@@ -27,10 +29,34 @@ public class ClientService {
 
     public ClientResponse findByCpf(String cpf) {
         validateCpf(cpf);
-        ClientEntity clientByCpf = clientRepository.findByCpf(cpf)
-                .orElseThrow(() -> new ClientNotFoundException("Não foi encontrado cliente com cpf: " + cpf));
+        ClientEntity clientByCpf = findClientByCpf(cpf);
 
         return new ClientResponse(clientByCpf.getId(), clientByCpf.getName(), clientByCpf.getCpf(), clientByCpf.getEmail());
+    }
+
+    public ClientResponse update(String cpf, ClientRequest request) {
+        validateCpf(cpf);
+        ClientEntity clientToUpdate = findClientByCpf(cpf);
+
+        if (Objects.nonNull(request.getEmail()) && !request.getEmail().isEmpty()) {
+            validateEmail(request.getEmail());
+            clientToUpdate.setEmail(request.getEmail());
+        }
+        if(Objects.nonNull(request.getName()) && !request.getName().isEmpty()) {
+            clientToUpdate.setName(request.getName());
+        }
+        if(Objects.nonNull(request.getCpf()) && !request.getCpf().isEmpty()) {
+            clientToUpdate.setCpf(request.getCpf());
+        }
+
+        ClientEntity updatedClient = clientRepository.save(clientToUpdate);
+
+        return new ClientResponse(updatedClient.getId(), updatedClient.getName(), updatedClient.getCpf(), updatedClient.getEmail());
+    }
+
+    private ClientEntity findClientByCpf(String cpf) {
+        return clientRepository.findByCpf(cpf)
+                .orElseThrow(() -> new ClientNotFoundException("Não foi encontrado cliente com cpf: " + cpf));
     }
 
     private void validateCpf(String cpf) {
