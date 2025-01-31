@@ -21,14 +21,16 @@ public class ClientController {
     private ClientService clientService;
 
     @PostMapping
-    ResponseEntity<ClientResponse> saveClient(@RequestBody ClientRequest clientRequest) {
+    public ResponseEntity<ClientResponse> saveClient(@RequestBody ClientRequest clientRequest) {
         URI uri = URI.create("/clientes");
 
         return ResponseEntity.created(uri).body(clientService.save(clientRequest));
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<ClientResponse> getClientById(@PathVariable Long id) {
+    @GetMapping("/{id}")//TODO: usar cpf
+    public ResponseEntity<ClientResponse> getClientById(@PathVariable Long id) {
         return ResponseEntity.ok(clientService.findById(id));
     }
+
+    //TODO: fazer put
 }

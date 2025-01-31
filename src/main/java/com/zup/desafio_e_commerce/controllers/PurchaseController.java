@@ -17,7 +17,7 @@ public class PurchaseController {
     private PurchaseService purchaseService;
 
     @PostMapping
-    ResponseEntity<PurchaseResponse> purchase(@RequestBody PurchaseRequest purchaseRequest) {
+    public ResponseEntity<PurchaseResponse> purchase(@RequestBody PurchaseRequest purchaseRequest) {
         return ResponseEntity.ok(purchaseService.purchase(purchaseRequest));
     }
 }

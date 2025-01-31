@@ -32,6 +32,10 @@ public class ProductService {
                 .toList();
     }
 
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
+    }
+
     private void validatePrice(Double price) {
         if((price <= 0)) {
             throw new InvalidValueException("O valor deve ser maior que zero.");
