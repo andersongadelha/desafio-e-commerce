@@ -17,6 +17,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleClientNotFoundException(ProductNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(InvalidValueException.class)
     public ResponseEntity<ErrorResponse> handleInvalidValueException(InvalidValueException ex) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
