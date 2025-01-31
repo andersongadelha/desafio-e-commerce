@@ -3,6 +3,7 @@ package com.zup.desafio_e_commerce.services;
 import com.zup.desafio_e_commerce.dtos.ProductRequest;
 import com.zup.desafio_e_commerce.dtos.ProductResponse;
 import com.zup.desafio_e_commerce.exceptions.InvalidValueException;
+import com.zup.desafio_e_commerce.exceptions.ProductNotFoundException;
 import com.zup.desafio_e_commerce.models.ProductEntity;
 import com.zup.desafio_e_commerce.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,21 @@ public class ProductService {
                 .toList();
     }
 
+    public void deleteById(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new ProductNotFoundException("Não foi encontrado produto com id: " + id);
+        }
+        productRepository.deleteById(id);
+    }
+
     private void validatePrice(Double price) {
-        if((price <= 0)) {
+        if ((price <= 0)) {
             throw new InvalidValueException("O valor deve ser maior que zero.");
         }
     }
 
     private void validateQuantity(int quantity) {
-        if((quantity < 0)) {
+        if ((quantity < 0)) {
             throw new InvalidValueException("A quantidade deve ser maior ou igual a zero.");
         }
     }
