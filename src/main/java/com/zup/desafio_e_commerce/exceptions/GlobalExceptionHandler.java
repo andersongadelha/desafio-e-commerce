@@ -10,65 +10,49 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ClientNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleClientNotFoundException(ClientNotFoundException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+    private static final String CPF_ERROR_MESSAGE = "O CPF informado já está cadastrado no sistema.";
+    private static final String EMAIL_ERROR_MESSAGE = "O email informado já está cadastrado no sistema.";
+    private static final String NAME_ERROR_MESSAGE = "O nome informado já está cadastrado no sistema.";
+    private static final String GENERIC_DB_ERROR_MESSAGE = "Ocorreu um erro de integridade no banco de dados. Verifique os dados enviados.";
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    @ExceptionHandler({
+            ClientNotFoundException.class,
+            ProductNotFoundException.class
+    })
+    public ResponseEntity<ErrorResponse> handleNotFoundExceptions(RuntimeException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleClientNotFoundException(ProductNotFoundException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(InvalidValueException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidValueException(InvalidValueException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler({
+            InvalidValueException.class,
+            HttpMessageNotReadableException.class,
+            UnregisterProductException.class,
+            InsufficientStockException.class
+    })
+    public ResponseEntity<ErrorResponse> handleBadRequestExceptions(RuntimeException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        String message = ex.getMessage();
-        String userFriendlyMessage;
+        String userFriendlyMessage = determineDataIntegrityErrorMessage(ex.getMessage());
+        return buildErrorResponse(userFriendlyMessage, HttpStatus.BAD_REQUEST);
+    }
 
+    private String determineDataIntegrityErrorMessage(String message) {
         if (message.contains("CPF NULLS FIRST")) {
-            userFriendlyMessage = "O CPF informado já está cadastrado no sistema.";
+            return CPF_ERROR_MESSAGE;
         } else if (message.contains("EMAIL NULLS FIRST")) {
-            userFriendlyMessage = "O email informado já está cadastrado no sistema.";
+            return EMAIL_ERROR_MESSAGE;
         } else if (message.contains("NAME NULLS FIRST")) {
-            userFriendlyMessage = "O nome informado já está cadastrado no sistema.";
+            return NAME_ERROR_MESSAGE;
         } else {
-            userFriendlyMessage = "Ocorreu um erro de integridade no banco de dados. Verifique os dados enviados.";
+            return GENERIC_DB_ERROR_MESSAGE;
         }
-        ErrorResponse errorResponse = new ErrorResponse(userFriendlyMessage);
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    private ResponseEntity<ErrorResponse> buildErrorResponse(String message, HttpStatus status) {
+        ErrorResponse errorResponse = new ErrorResponse(message);
+        return new ResponseEntity<>(errorResponse, status);
     }
-
-    @ExceptionHandler(UnregisterProductException.class)
-    public ResponseEntity<ErrorResponse> handleUnregisterProductException(UnregisterProductException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(InsufficientStockException.class)
-    public ResponseEntity<ErrorResponse> handleInsufficientStockException(InsufficientStockException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
 }
