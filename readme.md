@@ -44,17 +44,11 @@ http://localhost:8080
 ---
 
 ## 📚 **Endpoints Disponíveis**
-Aqui estão os principais endpoints da API:
+### Documentação Swagger
+A aplicação possui uma documentação interativa das APIs gerada pelo Swagger Automagicamente 🧙‍♂️.
 
-**Clientes**
-- GET /clientes/{cpf} - Retorna um cliente pelo CPF
-- POST /clientes - Cadastra um novo cliente
-- PUT /clientes/{cpf} - Atualiza as informações de um cliente.  
+Certifique-se de que a aplicação está rodando. Abra o navegador e acesse: http://localhost:8080/swagger-ui.html.
+Na interface do Swagger, você pode:
 
-**Produtos**
-- GET /produtos - Retorna todos os produtos
-- POST /produtos - Cadastra um novo produto
-- DELETE /protutos/{id} - Remove um produto
-
-**Compras**
-- POST /compras - realiza uma compra
+- Visualizar todas as rotas disponíveis.
+- Testar as APIs diretamente na interface.
